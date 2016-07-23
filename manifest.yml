@@ -1,0 +1,7 @@
+---
+name: EspConfigserver
+memory: 2048M
+instances: 1
+timeout: 180
+services:
+ - Services_log

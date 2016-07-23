@@ -1,0 +1,77 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven {
+			url 'http://artifactory.io.comcast.net/plugins-release'
+			credentials {
+				username = "${artifactory_user}"
+				password = "${artifactory_password}"
+			}
+		}
+		maven {
+			url 'http://artifactory.io.comcast.net/plugins-release'
+			credentials {
+				username = "${artifactory_user}"
+				password = "${artifactory_password}"
+			}
+		}
+		maven {
+			url 'http://artifactory.io.comcast.net/plugins-release-local'
+			credentials {
+				username = "${artifactory_user}"
+				password = "${artifactory_password}"
+			}
+		}
+	}
+	dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE") }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'maven'
+
+group = 'com.comcast.core'
+version = '0.2.0'
+
+
+jar {
+	baseName = 'esp-configserver'
+	version =  '0.2.0'
+}
+
+repositories {
+	mavenLocal()
+	maven {
+		url "http://artifactory.io.comcast.net/libs-release"
+		credentials {
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+		}
+	}
+	maven {
+		url "http://artifactory.io.comcast.net/libs-snapshot"
+		credentials {
+			username = "${artifactory_user}"
+			password = "${artifactory_password}"
+		}
+	}
+}
+
+
+springBoot { mainClass = "com.comcast.core.configserver.ConfigServerApplication" }
+
+bootRun {
+	systemProperties = System.properties
+}
+
+dependencies {
+	compile("org.springframework.cloud:spring-cloud-config-server:1.0.2.RELEASE")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+
+	testCompile("junit:junit")
+}
+
+task wrapper(type: Wrapper) { gradleVersion = '2.5' }
